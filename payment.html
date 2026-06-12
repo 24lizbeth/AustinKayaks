@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | Austin Kayak Rental Delivery</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>Austin Kayak Delivery</h1>
+                <p class="tagline">Delivered to your boat ramp</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="payment-container">
+            <div class="container">
+                <h2>Complete Your Payment</h2>
+                <div id="booking-summary" class="booking-summary"></div>
+                
+                <div class="payment-form-card">
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="email">Email address (for receipt)</label>
+                            <input type="email" id="email" name="email" required value="">
+                        </div>
+                        <button type="submit" id="stripe-checkout-button" class="btn btn-primary">Pay with Stripe</button>
+                    </form>
+                    <p class="test-note">Test mode: Use card 4242 4242 4242 4242, any future expiry, any CVC.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Austin Kayak Delivery – Premium Austin kayak rental delivery service.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Load booking data from session storage
+        const bookingData = JSON.parse(sessionStorage.getItem('pendingBooking') || '{}');
+        
+        if (!bookingData.fullname) {
+            window.location.href = 'book.html';
+        }
+        
+        // Display booking summary
+        const summaryDiv = document.getElementById('booking-summary');
+        summaryDiv.innerHTML = `
+            <h3>Booking Summary</h3>
+            <p><strong>Name:</strong> ${bookingData.fullname}</p>
+            <p><strong>Date:</strong> ${bookingData.rental_date}</p>
+            <p><strong>Duration:</strong> ${bookingData.hours} hours</p>
+            <p><strong>Kayaks:</strong></p>
+            <ul>
+                ${bookingData.single_qty > 0 ? `<li>Single Kayak x${bookingData.single_qty}</li>` : ''}
+                ${bookingData.tandem_qty > 0 ? `<li>Tandem Kayak x${bookingData.tandem_qty}</li>` : ''}
+                ${bookingData.fishing_qty > 0 ? `<li>Fishing Kayak x${bookingData.fishing_qty}</li>` : ''}
+                ${bookingData.kids_qty > 0 ? `<li>Kids Kayak x${bookingData.kids_qty}</li>` : ''}
+            </ul>
+            <p><strong>Delivery:</strong> ${bookingData.delivery_location}</p>
+            <p class="total"><strong>Total:</strong> $${bookingData.total_amount}</p>
+        `;
+        
+        // Pre-fill email
+        document.getElementById('email').value = bookingData.email || '';
+        
+        // Stripe payment (using test key - replace with your actual publishable key)
+        const stripe = Stripe('pk_test_51QZ1EXAMPLEKEYREPLACELATER');
+        
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // In production, you would create a Stripe Checkout Session here
+            // For now, redirect to a success page
+            alert('Demo: In production, this would redirect to Stripe. Your booking has been saved to Google Sheets.');
+            
+            // Clear session storage and redirect
+            sessionStorage.removeItem('pendingBooking');
+            window.location.href = 'thank-you.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book & Pay | Austin Kayak Rental Delivery</title>
+    <meta name="description" content="Book and pay for kayak delivery to any Town Lake or Lake Austin boat ramp. Instant confirmation with Stripe.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>Austin Kayak Delivery</h1>
+                <p class="tagline">Delivered to your boat ramp</p>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="book.html" class="active">Book Now</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="reviews-blog.html">Reviews & Blog</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="booking-hero">
+            <div class="container">
+                <h2>Reserve & Pay in One Step</h2>
+                <p>Fill out your details below, then complete secure payment via Stripe.</p>
+            </div>
+        </section>
+
+        <section class="booking-form-section">
+            <div class="container">
+                <div id="error-message" class="error-message" style="display:none;"></div>
+                <div id="loading-spinner" class="loading-spinner" style="display:none;">Processing... Please do not close this page.</div>
+                
+                <form id="booking-payment-form">
+                    <!-- Customer Info -->
+                    <div class="form-group">
+                        <label for="fullname">Full Name *</label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <!-- Rental Details -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rental_date">Rental Date *</label>
+                            <input type="date" id="rental_date" name="rental_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hours">Number of Hours *</label>
+                            <select id="hours" name="hours" required>
+                                <option value="2">2 hours</option>
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="6">6 hours</option>
+                                <option value="8">8 hours (full day)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Kayak Selection -->
+                    <h3>Select Kayaks</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="single_qty">Single Kayak ($20/hr)</label>
+                            <input type="number" id="single_qty" name="single_qty" min="0" value="0" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="tandem_qty">Tandem Kayak ($35/hr)</label>
+                            <input type="number" id="tandem_qty" name="tandem_qty" min="0" value="0" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="fishing_qty">Fishing Kayak ($30/hr)</label>
+                            <input type="number" id="fishing_qty" name="fishing_qty" min="0" value="0" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="kids_qty">Kids Kayak ($17/hr)</label>
+                            <input type="number" id="kids_qty" name="kids_qty" min="0" value="0" step="1">
+                        </div>
+                    </div>
+
+                    <!-- Delivery Location -->
+                    <div class="form-group">
+                        <label for="delivery_location">Preferred Boat Ramp / Delivery Location *</label>
+                        <select id="delivery_location" name="delivery_location" required>
+                            <option value="">Select a ramp or specify custom</option>
+                            <optgroup label="Town Lake (Lady Bird Lake)">
+                                <option>Redbud Trail (30.2911, -97.7879)</option>
+                                <option>UT Women's Rowing Center (30.2748, -97.7745)</option>
+                                <option>Texas Rowing Center (30.2719, -97.7690)</option>
+                                <option>Cesar Chavez (30.2702, -97.7660)</option>
+                                <option>Barton Creek (30.2642, -97.7681)</option>
+                                <option>Holiday Inn (30.2524, -97.7374)</option>
+                                <option>IH 35 Bridge (30.2515, -97.7363)</option>
+                                <option>Festival Beach (30.2483, -97.7278)</option>
+                            </optgroup>
+                            <optgroup label="Lake Austin">
+                                <option>Walsh Boat Landing (30.2979, -97.7839)</option>
+                                <option>Emma Long Metropolitan Park (30.335, -97.83)</option>
+                                <option>Loop 360 Boat Ramp (30.348611, -97.796999)</option>
+                            </optgroup>
+                            <option value="custom">I will provide exact GPS coordinates below</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coordinates">If custom location, enter GPS coordinates or address</label>
+                        <textarea id="coordinates" name="coordinates" rows="2" placeholder="e.g., 30.2911, -97.7879 or specific public access point"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special_requests">Special requests or notes</label>
+                        <textarea id="special_requests" name="special_requests" rows="3" placeholder="Need extra paddles? Life jackets for kids?"></textarea>
+                    </div>
+
+                    <!-- Price Preview -->
+                    <div id="price-preview">
+                        <strong>Total due today:</strong> <span id="total-price">$0.00</span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="pay-book-button" class="btn btn-primary">Pay & Book Now</button>
+                    <p class="form-note">You will be redirected to Stripe for secure payment. Your booking is confirmed only after payment.</p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Austin Kayak Delivery – Premium Austin kayak rental delivery service.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book your Austin kayak rental delivery. Choose kayak type, delivery ramp, date, and time. We bring the kayaks to you.">
+    <title>Book Kayak Delivery | Austin Kayak Rental</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>Austin Kayak Delivery</h1>
+                <span class="tagline">We bring the kayaks to your ramp</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="book.html" class="active">Book Now</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="reviews-blog.html">Reviews & Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Book Your Kayak Delivery</h1>
+                <p>Fill out the form below. We’ll confirm availability and send a secure payment link via Stripe.</p>
+            </div>
+        </section>
+
+        <section class="booking-form-section">
+            <div class="container">
+                <form name="kayak-booking" method="POST" netlify netlify-honeypot="bot-field" data-netlify="true">
+                    <input type="hidden" name="form-name" value="kayak-booking">
+                    <p class="hidden"><label>Don't fill this out: <input name="bot-field"></label></p>
+
+                    <div class="form-group">
+                        <label for="name">Full name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Rental date *</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hours">Hours *</label>
+                            <select id="hours" name="hours" required>
+                                <option value="2">2 hours</option>
+                                <option value="3">3 hours</option>
+                                <option value="4">4 hours</option>
+                                <option value="6">6 hours</option>
+                                <option value="8">Full day (8 hours)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kayak selection *</label>
+                        <div class="kayak-select">
+                            <div><label><input type="number" name="single_qty" min="0" max="6" value="0"> Single ($20/hr)</label></div>
+                            <div><label><input type="number" name="tandem_qty" min="0" max="4" value="0"> Tandem ($35/hr)</label></div>
+                            <div><label><input type="number" name="fishing_qty" min="0" max="4" value="0"> Fishing ($30/hr)</label></div>
+                            <div><label><input type="number" name="kids_qty" min="0" max="6" value="0"> Kids ($17/hr)</label></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ramp">Delivery ramp *</label>
+                        <select id="ramp" name="ramp" required>
+                            <optgroup label="Town Lake Access Points">
+                                <option>Redbud Trail (30.2911, -97.7879)</option>
+                                <option>UT Women’s Rowing Center (30.2748, -97.7745)</option>
+                                <option>Texas Rowing Center (30.2719, -97.7690)</option>
+                                <option>Cesar Chavez (30.2702, -97.7660)</option>
+                                <option>Barton Creek (30.2642, -97.7681)</option>
+                                <option>Holiday Inn (30.2524, -97.7374)</option>
+                                <option>IH 35 Bridge (30.2515, -97.7363)</option>
+                                <option>Festival Beach (30.2483, -97.7278)</option>
+                            </optgroup>
+                            <optgroup label="Lake Austin Access Points">
+                                <option>Walsh Boat Landing (30.2979, -97.7839)</option>
+                                <option>Emma Long Metropolitan Park (30.335, -97.83)</option>
+                                <option>Loop 360 Boat Ramp (30.348611, -97.796999)</option>
+                            </optgroup>
+                        </select>
+                        <small>Deliver to any ramp not listed? Enter coordinates below.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coordinates">Special requests / custom GPS coordinates</label>
+                        <textarea id="coordinates" name="coordinates" rows="3" placeholder="Example: 30.2915, -97.7882 – gravel ramp near Redbud. Or any other requests."></textarea>
+                    </div>
+
+                     <button type="submit" class="btn btn-primary btn-large"><a href="payment.html">Submit Booking Request</a></button>
+                </form>
+                <div class="booking-note">
+                    <p><i class="fas fa-credit-card"></i> After we confirm your delivery, you’ll receive a secure Stripe payment link to complete your booking.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="logo-text">Austin Kayak Delivery</div>
+                <p>We deliver to any public boat ramp on Town Lake and Lake Austin.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="book.html">Book Now</a></li>
+                    <li><a href="activities.html">Activities</a></li>
+                    <li><a href="reviews-blog.html">Reviews & Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h4>Call Us</h4>
+                <p><i class="fas fa-phone-alt"></i>(512) 814-7172</p>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Austin Kayaks — Kayak Delivery Rentals in Austin. All rights reserved.</p>
+        </div>
+</footer>
+</body>
+</html>
+
+
+
+
+
+
+// Mobile navigation toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    }
+
+    // Price preview calculation on book.html
+    function calculateTotal() {
+        const singleQty = parseInt(document.getElementById('single_qty')?.value) || 0;
+        const tandemQty = parseInt(document.getElementById('tandem_qty')?.value) || 0;
+        const fishingQty = parseInt(document.getElementById('fishing_qty')?.value) || 0;
+        const kidsQty = parseInt(document.getElementById('kids_qty')?.value) || 0;
+        const hours = parseInt(document.getElementById('hours')?.value) || 2;
+
+        const singlePrice = 20;
+        const tandemPrice = 35;
+        const fishingPrice = 30;
+        const kidsPrice = 17;
+
+        const total = (singleQty * singlePrice + tandemQty * tandemPrice + fishingQty * fishingPrice + kidsQty * kidsPrice) * hours;
+        
+        const priceSpan = document.getElementById('total-price');
+        if (priceSpan) {
+            priceSpan.textContent = `$${total.toFixed(2)}`;
+        }
+    }
+
+    // Attach event listeners for booking form if on book.html
+    const formElements = ['single_qty', 'tandem_qty', 'fishing_qty', 'kids_qty', 'hours'];
+    formElements.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', calculateTotal);
+            el.addEventListener('change', calculateTotal);
+        }
+    });
+
+    // Initial calculation
+    calculateTotal();
+    
+  // Mock order data — in production, pass via URL params or session
+        const urlParams = new URLSearchParams(window.location.search);
+        const single = parseInt(urlParams.get('single') || 0);
+        const tandem = parseInt(urlParams.get('tandem') || 0);
+        const fishing = parseInt(urlParams.get('fishing') || 0);
+        const kids = parseInt(urlParams.get('kids') || 0);
+        const hours = parseInt(urlParams.get('hours') || 2);
+        
+        const singleTotal = single * 20 * hours;
+        const tandemTotal = tandem * 35 * hours;
+        const fishingTotal = fishing * 35 * hours;
+        const kidsTotal = kids * 17 * hours;
+        const total = singleTotal + tandemTotal + fishingTotal + kidsTotal;
+        
+        document.getElementById('order-summary').innerHTML = `
+            <p>Single: ${single} x $20/hr x ${hours}hrs = $${singleTotal}</p>
+            <p>Tandem: ${tandem} x $35/hr x ${hours}hrs = $${tandemTotal}</p>
+            <p>Fishing: ${fishing} x $35/hr x ${hours}hrs = $${fishingTotal}</p>
+            <p>Kids: ${kids} x $17/hr x ${hours}hrs = $${kidsTotal}</p>
+            <h3>Total: $${total}</h3>
+        `;
+        
+        const stripe = Stripe('pk_test_51Tbu1C2ffAApa8ClDUAMtxawz8id667KqtlmYABhxpaWkp1nQTMsX7W4izL2RrzXP6ex1XfAMtmOUB5lzgvJkk0V00XFoTURt2');
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('customer-name').value;
+            const email = document.getElementById('customer-email').value;
+            const response = await fetch('https://your-backend-or-netlify-function-url/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, total, hours, single, tandem, fishing, kids })
+            });
+            const session = await response.json();
+            const result = await stripe.redirectToCheckout({ sessionId: session.id });
+            if (result.error) alert(result.error.message);
+        });
+
+
+    // Smooth scroll for anchor links (optional)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+});
