@@ -4,7 +4,7 @@
 // ========================================
 // CONFIGURATION
 // ========================================
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylSDpGlwqDJfyTfUrJN8hMXuQzF2c5UPC0N1I5wMK7od5xRzcday78a90Di45HoOHe/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2iGA3NBZDDMDUxve2GujCYEP558uR0Nj90qFnE6Fpt5NpVgeJfECIfSUi7JzTo5Gr/exec';
 
 // ========================================
 // PRICE CALCULATOR
