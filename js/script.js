@@ -1,7 +1,7 @@
 // script.js - Complete with Google Sheets + Stripe
 
 // CONFIGURATION
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznm32oFUcflYZKQ_b3q4nxNOOZDJ6w5tvc7ltFQGaA8s7bjWfdmaKTAC2_EK3BvMU/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylSDpGlwqDJfyTfUrJN8hMXuQzF2c5UPC0N1I5wMK7od5xRzcday78a90Di45HoOHe/exec';
 const STRIPE_PUBLISHABLE_KEY = 'pk_test_51QZ1EXAMPLEKEYREPLACELATER'; // Replace with your Stripe key
 
 // Mobile navigation toggle
