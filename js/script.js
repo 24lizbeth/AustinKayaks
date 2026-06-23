@@ -1,11 +1,11 @@
-// script.js - Using no-cors mode (bypasses CORS)
-// Last updated: 2026-06-17
-
+// script.js - Complete working version with no-cors
 // CONFIGURATION - REPLACE WITH YOUR DEPLOYED SCRIPT URL
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylSDpGlwqDJfyTfUrJN8hMXuQzF2c5UPC0N1I5wMK7od5xRzcday78a90Di45HoOHe/exec';
 
 // Mobile navigation toggle
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded - script starting');
+    
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     if (hamburger) {
@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Price preview calculation
     function calculateTotal() {
+        console.log('Calculating total...');
+        
         const singleQty = parseInt(document.getElementById('single_qty')?.value) || 0;
         const tandemQty = parseInt(document.getElementById('tandem_qty')?.value) || 0;
         const fishingQty = parseInt(document.getElementById('fishing_qty')?.value) || 0;
@@ -47,13 +49,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Initial calculation
     calculateTotal();
+
+    // Helper functions
+    function showError(errorDiv, message) {
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.style.background = '#fed7d7';
+            errorDiv.style.color = '#c53030';
+            errorDiv.style.borderLeft = '4px solid #e53e3e';
+        }
+    }
+
+    function resetButton(button, spinner) {
+        if (button) {
+            button.disabled = false;
+            button.textContent = 'Pay & Book Now';
+        }
+        if (spinner) spinner.style.display = 'none';
+    }
 
     // Handle form submission
     const bookingForm = document.getElementById('booking-payment-form');
     if (bookingForm) {
-        bookingForm.addEventListener('submit', async function(e) {
+        console.log('Form found - attaching submit handler');
+        
+        bookingForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form submitted');
             
             // Get UI elements
             const spinner = document.getElementById('loading-spinner');
@@ -72,21 +97,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Collect form data
             const formData = {
-                fullname: document.getElementById('fullname').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                rental_date: document.getElementById('rental_date').value,
-                hours: document.getElementById('hours').value,
-                single_qty: document.getElementById('single_qty').value || '0',
-                tandem_qty: document.getElementById('tandem_qty').value || '0',
-                fishing_qty: document.getElementById('fishing_qty').value || '0',
-                kids_qty: document.getElementById('kids_qty').value || '0',
-                delivery_location: document.getElementById('delivery_location').value,
-                coordinates: document.getElementById('coordinates').value.trim(),
-                special_requests: document.getElementById('special_requests').value.trim()
+                fullname: document.getElementById('fullname')?.value?.trim() || '',
+                email: document.getElementById('email')?.value?.trim() || '',
+                phone: document.getElementById('phone')?.value?.trim() || '',
+                rental_date: document.getElementById('rental_date')?.value || '',
+                hours: document.getElementById('hours')?.value || '2',
+                single_qty: document.getElementById('single_qty')?.value || '0',
+                tandem_qty: document.getElementById('tandem_qty')?.value || '0',
+                fishing_qty: document.getElementById('fishing_qty')?.value || '0',
+                kids_qty: document.getElementById('kids_qty')?.value || '0',
+                delivery_location: document.getElementById('delivery_location')?.value || '',
+                coordinates: document.getElementById('coordinates')?.value?.trim() || '',
+                special_requests: document.getElementById('special_requests')?.value?.trim() || '',
+                total_amount: calculateTotal()
             };
             
-            const total_amount = calculateTotal();
+            console.log('Booking data collected:', formData);
             
             // Validation
             if (!formData.fullname) {
@@ -119,57 +145,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            if (total_amount <= 0) {
+            if (formData.total_amount <= 0) {
                 showError(errorDiv, 'Please select at least one kayak.');
                 resetButton(submitBtn, spinner);
                 return;
             }
             
-            try {
-                // Show progress
-                if (errorDiv) {
-                    errorDiv.textContent = 'Submitting your booking...';
-                    errorDiv.style.display = 'block';
-                    errorDiv.style.background = '#e6fffa';
-                    errorDiv.style.color = '#234e52';
-                    errorDiv.style.borderLeft = '4px solid #38b2ac';
-                }
-                
-                // Send to Google Sheets using no-cors mode
-                // THIS BYPASSES THE CORS ERROR
-                a// YOUR CURRENT CODE (problematic with await + no-cors)
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(bookingData)
-                    });
-                    // The await never resolves properly with no-cors
-                    body: JSON.stringify({
-                        fullname: formData.fullname,
-                        email: formData.email,
-                        phone: formData.phone,
-                        rental_date: formData.rental_date,
-                        hours: formData.hours,
-                        single_qty: formData.single_qty,
-                        tandem_qty: formData.tandem_qty,
-                        fishing_qty: formData.fishing_qty,
-                        kids_qty: formData.kids_qty,
-                        delivery_location: formData.delivery_location,
-                        coordinates: formData.coordinates,
-                        special_requests: formData.special_requests,
-                        total_amount: total_amount
-                    })
-                });
-                
+            // Send to Google Sheets using no-cors mode
+            console.log('Sending to Google Sheets...');
+            console.log('URL:', GOOGLE_SCRIPT_URL);
+            
+            // FIXED: Use .then() instead of await
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(function() {
                 // With no-cors, we can't read the response
-                // So we assume success if no error was thrown
+                // But if we get here, the request was sent
+                console.log('Data sent successfully (no-cors)');
                 
-                // Success!
+                // Show success message
                 if (errorDiv) {
                     errorDiv.textContent = '✅ Booking submitted! Check your email for confirmation.';
+                    errorDiv.style.display = 'block';
                     errorDiv.style.background = '#c6f6d5';
                     errorDiv.style.color = '#22543d';
                     errorDiv.style.borderLeft = '4px solid #38a169';
@@ -178,39 +182,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Reset button
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Submit Booking Request';
+                    submitBtn.textContent = 'Pay & Book Now';
                 }
                 if (spinner) spinner.style.display = 'none';
                 
-                // Redirect to thank you page after delay
+                // Store for payment page (optional)
+                sessionStorage.setItem('pendingBooking', JSON.stringify(formData));
+                
+                // Redirect to thank you page
                 setTimeout(function() {
                     window.location.href = 'thank-you.html';
-                }, 3000);
-                
-            } catch (error) {
-                console.error('Booking error:', error);
-                showError(errorDiv, '⚠️ ' + error.message + '. Please try again or contact us directly.');
+                }, 2500);
+            })
+            .catch(function(error) {
+                // This catches network errors
+                console.error('Network error:', error);
+                showError(errorDiv, '⚠️ Network error. Please check your connection and try again.');
                 resetButton(submitBtn, spinner);
-            }
+            });
         });
+    } else {
+        console.error('booking-payment-form not found on page');
     }
 });
 
-// Helper functions
-function showError(errorDiv, message) {
-    if (errorDiv) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        errorDiv.style.background = '#fed7d7';
-        errorDiv.style.color = '#c53030';
-        errorDiv.style.borderLeft = '4px solid #e53e3e';
-    }
-}
-
-function resetButton(button, spinner) {
-    if (button) {
-        button.disabled = false;
-        button.textContent = 'Submit Booking Request';
-    }
-    if (spinner) spinner.style.display = 'none';
-}
+console.log('script.js loaded successfully');
