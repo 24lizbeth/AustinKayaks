@@ -394,3 +394,95 @@ input, select, textarea {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+/* ========================================
+   MESSAGE STYLES
+   ======================================== */
+.success-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #38a169;
+    background: #c6f6d5 !important;
+    color: #22543d !important;
+}
+
+.error-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #e53e3e;
+    background: #fed7d7 !important;
+    color: #c53030 !important;
+}
+
+.info-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #38b2ac;
+    background: #e6fffa !important;
+    color: #234e52 !important;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    text-align: center;
+    padding: 1rem;
+    background: #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    display: none;
+}
+
+.loading-spinner::after {
+    content: '...';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+}
+
+/* Disabled button */
+#pay-book-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Form validation styles */
+.form-group input:invalid,
+.form-group select:invalid {
+    border-color: #e53e3e;
+}
+
+.form-group input:valid,
+.form-group select:valid {
+    border-color: #38a169;
+}
+
+/* Required field indicator */
+.form-group label::after {
+    content: ' *';
+    color: #e53e3e;
+    font-weight: bold;
+}
+
+/* Hide the asterisk for non-required fields */
+.form-group label:not([for="coordinates"]):not([for="special_requests"])::after {
+    content: ' *';
+    color: #e53e3e;
+}
+
+.form-group label[for="coordinates"]::after,
+.form-group label[for="special_requests"]::after {
+    content: ' (optional)';
+    color: #718096;
+    font-weight: normal;
+    font-size: 0.85rem;
+}
